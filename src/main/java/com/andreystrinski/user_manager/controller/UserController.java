@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,8 +43,9 @@ public class UserController {
 
   @GetMapping
   public ResponseEntity<Page<UserDetailsDto>> findUsers(
+      @RequestParam(required = false) String name,
       @PageableDefault(sort = "id", direction = Direction.ASC, value = 5) Pageable pageable) {
-    var users = userService.findUsers(pageable);
+    var users = userService.findUsers(name, pageable);
 
     var response = users.map((user) -> modelMapper.map(user, UserDetailsDto.class));
 
